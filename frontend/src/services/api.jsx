@@ -1,9 +1,9 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://livetodoapp-6q1n.onrender.com/api';
 
 
 export const registerUser = async (userData) => {
   try {
-    const response = await fetch(`${API_URL}/auth/register`, {
+    const response = await fetch(`${API_URL}/users/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

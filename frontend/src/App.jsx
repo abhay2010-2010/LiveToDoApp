@@ -1,53 +1,53 @@
+// App.js
+
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import {   useNavigate, Navigate, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import TaskPage from './pages/TaskPage';
+import Navbar from './components/Navbar';
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const navigate = useNavigate();
 
   const handleLogin = (token) => {
     setToken(token);
+    navigate('/tasks'); // Redirect to tasks page after successful login
   };
 
   const handleRegister = (token) => {
     setToken(token);
+    navigate('/tasks'); // Redirect to tasks page after successful registration
   };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     setToken('');
+    navigate('/login'); // Redirect to login page after logout
   };
 
   return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li><Link to="/login">Login</Link></li>
-            <li><Link to="/register">Register</Link></li>
-            <li><Link to="/tasks">Tasks</Link></li>
-            {token && <li><button onClick={handleLogout}>Logout</button></li>}
-          </ul>
-        </nav>
+    <><Navbar token={token} handleLogout={handleLogout} />
+    <Routes>
+      
+        
 
-        <Switch>
-          <Route path="/login">
-            {token ? <Redirect to="/tasks" /> : <Login onLogin={handleLogin} />}
-          </Route>
-          <Route path="/register">
-            {token ? <Redirect to="/tasks" /> : <Register onRegister={handleRegister} />}
-          </Route>
-          <Route path="/tasks">
-            {token ? <TaskPage /> : <Redirect to="/login" />}
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/login" />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+        <Route path="/login">
+          {token ? navigate("/tasks") : <Login onLogin={handleLogin} />}
+        </Route>
+        <Route path="/register">
+          {token ? navigate("/tasks" ) : <Register onRegister={handleRegister} />}
+        </Route>
+        <Route path="/tasks">
+          {token ? <TaskPage /> : navigate("/login" )}
+        </Route>
+        <Route path="/">
+          {/* navigate("/login" ) */}
+        </Route>
+      
+    </Routes>
+    </>
   );
 };
 

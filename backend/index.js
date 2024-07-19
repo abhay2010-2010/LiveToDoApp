@@ -10,11 +10,11 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-// Middleware
+
 app.use(cors());
 app.use(express.json());
 
-// Socket.io setup for real-time updates (dummy implementation)
+
 io.on('connection', (socket) => {
   console.log('Socket connected:', socket.id);
 
@@ -22,13 +22,13 @@ io.on('connection', (socket) => {
     console.log('Socket disconnected:', socket.id);
   });
 
-  // Example: emit an event to update clients when a task is updated
+
   socket.on('taskUpdate', (updatedTask) => {
     socket.broadcast.emit('taskUpdate', updatedTask);
   });
 });
 
-// Routes
+
 app.use('/api/users',useruserRouter);
 app.use('/api/tasks', taskuserRouter);
 
