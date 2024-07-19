@@ -1,7 +1,5 @@
-// App.js
-
 import React, { useState } from 'react';
-import {   useNavigate, Navigate, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import TaskPage from './pages/TaskPage';
@@ -28,25 +26,14 @@ const App = () => {
   };
 
   return (
-    <><Navbar token={token} handleLogout={handleLogout} />
-    <Routes>
-      
-        
-
-        <Route path="/login">
-          {token ? navigate("/tasks") : <Login onLogin={handleLogin} />}
-        </Route>
-        <Route path="/register">
-          {token ? navigate("/tasks" ) : <Register onRegister={handleRegister} />}
-        </Route>
-        <Route path="/tasks">
-          {token ? <TaskPage /> : navigate("/login" )}
-        </Route>
-        <Route path="/">
-          {/* navigate("/login" ) */}
-        </Route>
-      
-    </Routes>
+    <>
+      <Navbar token={token} handleLogout={handleLogout} />
+      <Routes>
+        <Route path="/login" element={token ? <Navigate to="/tasks" /> : <Login onLogin={handleLogin} />} />
+        <Route path="/register" element={token ? <Navigate to="/tasks" /> : <Register onRegister={handleRegister} />} />
+        <Route path="/tasks" element={token ? <TaskPage /> : <Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
+      </Routes>
     </>
   );
 };
